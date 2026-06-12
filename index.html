@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>IT Lookup Tool</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="logo">🔧</div>
+      <div>
+        <h1>IT Lookup Tool</h1>
+        <p>mock data — v0.1 — built by xeng</p>
+      </div>
+    </header>
+
+    <div class="search-wrap">
+      <span class="search-icon">🔍</span>
+      <input
+        type="text"
+        id="search-input"
+        placeholder="Search by name or username..."
+        oninput="searchUser()"
+      />
+    </div>
+    <p class="hint">
+      Try searching:
+      <span onclick="quickSearch('sarah')">sarah</span>,
+      <span onclick="quickSearch('marcus')">marcus</span>, or
+      <span onclick="quickSearch('lin')">lin</span>
+    </p>
+
+    <div id="no-results">⚠ no user found — try a different name</div>
+
+    <div id="results">
+      <p class="section-label first">User</p>
+      <div class="user-card">
+        <div class="avatar" id="user-avatar"></div>
+        <div class="user-info">
+          <h2 id="user-name"></h2>
+          <p id="user-meta"></p>
+        </div>
+        <span class="badge" id="user-status"></span>
+      </div>
+
+      <p class="section-label">Device Details</p>
+      <div class="device-grid">
+        <div class="device-item">
+          <div class="label">Hostname</div>
+          <div class="value mono" id="d-hostname"></div>
+        </div>
+        <div class="device-item">
+          <div class="label">Operating System</div>
+          <div class="value" id="d-os"></div>
+        </div>
+        <div class="device-item">
+          <div class="label">BIOS Version</div>
+          <div class="value mono" id="d-bios"></div>
+        </div>
+        <div class="device-item">
+          <div class="label">Lease / Equipment Expiration</div>
+          <div class="value" id="d-lease"></div>
+        </div>
+        <div class="device-item">
+          <div class="label">Last Seen</div>
+          <div class="value" id="d-lastseen"></div>
+        </div>
+        <div class="device-item">
+          <div class="label">Last Device Check-in</div>
+          <div class="value" id="d-checkin"></div>
+        </div>
+        <div class="device-item">
+          <div class="label">Last User Login</div>
+          <div class="value" id="d-lastlogin"></div>
+        </div>
+        <div class="device-item">
+          <div class="label">Disk Usage</div>
+          <div class="value" id="d-disk"></div>
+        </div>
+        <div class="device-item">
+          <div class="label">RAM</div>
+          <div class="value" id="d-ram"></div>
+        </div>
+        <div class="device-item">
+          <div class="label">Antivirus</div>
+          <div class="value" id="d-av"></div>
+        </div>
+        <div class="device-item full">
+          <div class="label">Installed Applications</div>
+          <ul class="app-list" id="d-apps"></ul>
+        </div>
+      </div>
+
+      <p class="section-label">Action History</p>
+      <div class="history-list" id="action-history-list"></div>
+
+      <p class="section-label">Create Ticket</p>
+      <div class="ticket-section">
+        <h3>Select issue type</h3>
+        <div class="ticket-types">
+          <button class="ticket-btn" onclick="selectTicket(this)">Password Reset</button>
+          <button class="ticket-btn" onclick="selectTicket(this)">Software Install</button>
+          <button class="ticket-btn" onclick="selectTicket(this)">Hardware Issue</button>
+          <button class="ticket-btn" onclick="selectTicket(this)">Network Problem</button>
+          <button class="ticket-btn" onclick="selectTicket(this)">Other</button>
+        </div>
+
+        <textarea id="ticket-notes" placeholder="Add notes (optional)..."></textarea>
+
+        <button class="btn-submit" onclick="submitTicket()">
+          <span>🎫</span> Submit Ticket
+        </button>
+
+        <div class="success-toast" id="ticket-success"></div>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
