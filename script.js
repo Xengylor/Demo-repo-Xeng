@@ -260,6 +260,64 @@ function selectTicket(btn) {
   selectedTicketType = btn.textContent;
 }
 
+function loadAllTickets() {
+  const storageKey = 'IT_Tool_Tickets';
+  const storedTickets = localStorage.getItem(storageKey);
+
+  if (!storedTickets) {
+    return [];
+  }
+
+  try {
+    const parsedTickets = JSON.parse(storedTickets);
+    return Array.isArray(parsedTickets) ? parsedTickets : [];
+  } catch (error) {
+    return [];
+  }
+}
+
+function saveTicket(ticket) {
+  const storageKey = 'IT_Tool_Tickets';
+  const tickets = loadAllTickets();
+
+  tickets.push(ticket);
+  localStorage.setItem(storageKey, JSON.stringify(tickets));
+}
+
+function renderTickets() {
+  const tickets = loadAllTickets();
+  const container = document.getElementById('IT_Tool_Tickets');
+
+  if (!container) {
+    return;
+  }
+
+  if (tickets.length === 0) {
+    container.innerHTML = '<p style="text-align: center; color: #888;">No tickets yet.</p>';
+    return;
+  }
+
+  const sortedTickets = [...tickets].reverse();
+
+  const html = sortedTickets
+    .map(
+      (ticket) => `
+        <div class="ticket-item">
+          <div class="ticket-header">
+            <span class="ticket-id">${ticket.id}</span>
+            <span class="ticket-type">${ticket.type}</span>
+            <span class="ticket-time">${ticket.createdAt}</span>
+          </div>
+          <div class="ticket-user">User: ${ticket.user}</div>
+          ${ticket.notes ? `<div class="ticket-notes">Notes: ${ticket.notes}</div>` : ''}
+        </div>
+      `
+    )
+    .join('');
+
+  container.innerHTML = html;
+}
+
 function submitTicket() {
   const notes = document.getElementById('ticket-notes').value.trim();
   const userName = document.getElementById('user-name').textContent;
@@ -271,6 +329,18 @@ function submitTicket() {
   }
 
   const ticketId = 'TKT-' + Math.floor(10000 + Math.random() * 90000);
+  const now = new Date();
+  const createdAt = now.toLocaleDateString() + ' ' + now.toLocaleTimeString();
+  const ticket = {
+    id: ticketId,
+    type: selectedTicketType,
+    notes,
+    user: userName,
+    createdAt,
+  };
+
+  saveTicket(ticket);
+  renderTickets();
 
   toast.style.display = 'block';
   toast.textContent = `✓ ${ticketId} created for ${userName} · "${selectedTicketType}"` + (notes ? ` · Notes: "${notes}"` : '');
@@ -282,3 +352,7 @@ function resetTicket() {
   document.getElementById('ticket-notes').value = '';
   document.getElementById('ticket-success').style.display = 'none';
 }
+
+window.addEventListener('DOMContentLoaded', () => {
+  renderTickets();
+});
